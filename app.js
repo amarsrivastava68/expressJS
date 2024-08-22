@@ -4,11 +4,29 @@ const path = require('path');
 const app = express()
 app.use(express.json())
 const tours = JSON.parse(fs.readFileSync(path.join(process.cwd() , 'complete-node-bootcamp/4-natours/starter/dev-data/data/' , 'tours-simple.json')))
-app.get('/api/v1/tours' , (req,res)=>{
+console.log(tours.length)
+app.get('/api/v1/tours/:id/:key?' , (req,res)=>{
+    console.log(req.params)
+    id = req.params.id *1
+    const tour = tours.find(el => el.id === id)
+    // if (id > tours.length)
+    // {
+    //     res.status(404).json({
+    //         status :'fail' , 
+    //         message : 'no tours were found  for this id . . .'
+    //     })
+    // }
+    if (!tour)
+        {
+            res.status(404).json({
+                status :'fail' , 
+                message : 'no tours were found  for this id . . .'
+            })
+        }
     res.status(200).json({
         status:'success' , 
         data:{
-          data:  tours
+          tour:  tour
         }
     }
     )
